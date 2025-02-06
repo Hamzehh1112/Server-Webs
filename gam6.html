@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO Game - By Hamzeh</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: 'Comic Sans MS', sans-serif;
+            text-align: center;
+            color: #333;
+        }
+        .uno-card {
+            display: inline-block;
+            width: 70px;
+            height: 105px;
+            margin: 5px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            font-size: 1.2em;
+            line-height: 105px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .red { background-color: #ff6347; }
+        .green { background-color: #32cd32; }
+        .blue { background-color: #1e90ff; }
+        .yellow { background-color: #ffd700; }
+        .wild { background-color: #000; color: #fff; }
+        .draw-two { background-color: #ffa500; }
+        .reverse { background-color: #800080; } /* Purple for reverse cards */
+        #player1-cards, #player2-cards {
+            margin: 20px 0;
+        }
+        .current-turn {
+            font-weight: bold;
+        }
+        .draw-button {
+            display: block;
+            margin: 5px auto;
+            padding: 5px 10px;
+            font-size: 0.8em;
+            cursor: pointer;
+        }
+        .win-message {
+            display: none;
+            font-size: 2em;
+            color: #32cd32;
+        }
+    </style>
+</head>
+<body background="Bggg.jpg">
+    <h1>Welcome to UNO - By Hamzeh</h1>
+    <div id="game-status">
+        <p id="turn-indicator">Player 1's turn</p>
+        <div id="current-card" class="uno-card" data-color="" data-number=""></div>
+    </div>
+    <div id="player1-cards">
+        <h2>Player 1's Cards</h2>
+        <button class="draw-button" onclick="drawForPlayer(1)">Draw Card</button>
+    </div>
+    <div id="player2-cards">
+        <h2>Player 2's Cards</h2>
+        <button class="draw-button" onclick="drawForPlayer(2)">Draw Card</button>
+    </div>
+    <div id="win-message" class="win-message"></div>
+
+    <script>
+        const colors = ['red', 'green', 'blue', 'yellow'];
+        const numbers = ['1', '2', '3', '4'];
+        const specialTypes = ['wild', 'draw-two', 'reverse'];
+
+        const gameStatus = document.getElementById('game-status');
+        const turnIndicator = document.getElementById('turn-indicator');
+        const winMessage = document.getElementById('win-message');
+        let currentPlayer = 1;
+        let direction = 1; // 1 for clockwise, -1 for counter-clockwise
+
+        function drawCard(includeSpecial = true) {
+            const types = includeSpecial ? [...numbers, ...specialTypes] : numbers;
+            let type = Math.random() < 0.1 && includeSpecial ? specialTypes[Math.floor(Math.random() * specialTypes.length)] : 'number';
+            const color = type === 'number' ? colors[Math.floor(Math.random() * colors.length)] : '';
+            const number = type === 'number' ? numbers[Math.floor(Math.random() * numbers.length)] : type === 'wild' ? 'W' : type === 'draw-two' ? '+2' : 'R';
+            const card = document.createElement('div');
+            card.classList.add('uno-card', type === 'number' ? color : type);
+            if (type === 'number') {
+                card.dataset.color = color;
+                card.dataset.number = number;
+                card.textContent = number;
+            } else if (type === 'wild') {
+                card.textContent = 'W';
+                card.dataset.type = 'wild';
+            } else if (type === 'draw-two') {
+                card.textContent = '+2';
+                card.dataset.type = 'draw-two';
+            } else if (type === 'reverse') {
+                card.textContent = 'R';
+                card.dataset.type = 'reverse';
+            }
+            return card;
+        }
+
+        function setupPlayerCards(playerId) {
+            const playerCards = document.getElementById(playerId);
+            for (let i = 0; i < 5; i++) {
+                const card = drawCard();
+                card.addEventListener('click', () => playCard(card, playerId));
+                playerCards.appendChild(card);
+            }
+        }
+
+        function setupInitialCard() {
+            let initialCard;
+            do {
+                initialCard = drawCard(false); // Ensure it's not a wild, draw-two, or reverse card
+            } while (!initialCard.dataset.color); // Continue drawing until a valid card is drawn
+            
+            const currentCard = document.getElementById('current-card');
+            currentCard.className = `uno-card ${initialCard.dataset.color}`;
+            currentCard.dataset.color = initialCard.dataset.color;
+            currentCard.dataset.number = initialCard.dataset.number;
+            currentCard.textContent = initialCard.dataset.number;
+        }
+
+        function playCard(card, playerId) {
+            if (currentPlayer !== parseInt(playerId.replace('player', ''))) {
+                alert('It is not your turn!');
+                return;
+            }
+
+            const currentCard = document.getElementById('current-card');
+            const playerCards = document.getElementById(playerId);
+
+            if (card.dataset.type === 'wild') {
+                const chosenColor = prompt('Choose a color (red, green, blue, yellow):');
+                if (colors.includes(chosenColor)) {
+                    currentCard.className = `uno-card ${chosenColor}`;
+                    currentCard.dataset.color = chosenColor;
+                    currentCard.dataset.number = card.textContent;
+                    currentCard.textContent = card.textContent;
+                    card.remove();
+                    checkForWinner(playerId);
+                    switchTurn();
+                } else {
+                    alert('Invalid color! Choose a valid color (red, green, blue, yellow).');
+                }
+                return;
+            }
+
+            if (card.dataset.type === 'draw-two') {
+                const otherPlayer = currentPlayer === 1 ? 2 : 1; // Always target the opposing player
+                for (let i = 0; i < 2; i++) {
+                    const newCard = drawCard();
+                    newCard.addEventListener('click', () => playCard(newCard, `player${otherPlayer}-cards`));
+                    document.getElementById(`player${otherPlayer}-cards`).appendChild(newCard);
+                }
+                card.remove();
+                checkForWinner(playerId);
+                switchTurn();
+                return;
+            }
+
+            if (card.dataset.type === 'reverse') {
+                direction *= -1; // Change the direction
+                card.remove();
+                checkForWinner(playerId);
+                switchTurn();
+                return;
+            }
+
+            if (card.dataset.color === currentCard.dataset.color || card.dataset.number === currentCard.dataset.number) {
+                currentCard.className = `uno-card ${card.dataset.color}`;
+                currentCard.dataset.color = card.dataset.color;
+                currentCard.dataset.number = card.dataset.number;
+                currentCard.textContent = card.dataset.number;
+                card.remove();
+                checkForWinner(playerId);
+                switchTurn();
+            } else {
+                alert('Invalid move! Choose a card that matches the current card\'s color or number.');
+            }
+        }
+
+        function switchTurn() {
+            currentPlayer = (currentPlayer + direction + 1 + 2) % 2 + 1; // Adjust turn based on direction
+            turnIndicator.textContent = `Player ${currentPlayer}'s turn`;
+            turnIndicator.classList.toggle('current-turn');
+        }
+
+        function drawForPlayer(player) {
+            if (currentPlayer !== player) {
+                alert('It is not your turn!');
+                return;
+            }
+            const playerCards = document.getElementById(`player${player}-cards`);
+            const card = drawCard();
+            card.addEventListener('click', () => playCard(card, `player${player}-cards`));
+            playerCards.appendChild(card);
+            switchTurn();
+        }
+
+        function checkForWinner(playerId) {
+            const playerCards = document.getElementById(playerId).querySelectorAll('.uno-card').length;
+            if (playerCards === 0) { // Player has no cards left
+                winMessage.textContent = `Player ${playerId.replace('player', '')} wins!`;
+                winMessage.style.display = 'block';
+                gameStatus.style.display = 'none';
+            }
+        }
+
+        setupInitialCard();
+        setupPlayerCards('player1-cards');
+        setupPlayerCards('player2-cards');
+    </script>
+</body>
+</html>
+
+
+
+
+
+

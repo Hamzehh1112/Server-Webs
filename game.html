@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+      background-color: #E0E0E0;
+      color: #333;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #333;
+      color: #FFF;
+      padding: 20px;
+    }
+    .container {
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 600px;
+      background-color: #FFF;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #008CBA;
+      color: #FFF;
+      font-size: 16px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Rock Paper Scissors</h1>
+  </header>
+  <div class="container">
+    <h2>Choose your move:</h2>
+    <button class="btn" onclick="play('rock')">Rock</button>
+    <button class="btn" onclick="play('paper')">Paper</button>
+    <button class="btn" onclick="play('scissors')">Scissors</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function play(userChoice) {
+      const choices = ['rock', 'paper', 'scissors'];
+      const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+      let result = '';
+
+      if (userChoice === computerChoice) {
+        result = 'It\'s a tie!';
+      } else if (
+        (userChoice === 'rock' && computerChoice === 'scissors') ||
+        (userChoice === 'paper' && computerChoice === 'rock') ||
+        (userChoice === 'scissors' && computerChoice === 'paper')
+      ) {
+        result = 'You win!';
+      } else {
+        result = 'You lose!';
+      }
+
+      document.getElementById('result').innerText = `You chose ${userChoice}, computer chose ${computerChoice}. ${result}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Basics Exam</title>
+    <style>
+        body {
+            background-color: green;
+            font-family: 'Comic Sans MS', sans-serif;
+            text-align: center;
+            color: #fff;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .question {
+            margin: 30px; /* Increased margin */
+            padding: 30px; /* Increased padding */
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 3px solid yellow; /* Added yellow outline and increased border size */
+            border-radius: 0; /* Changed to square */
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .question h2 {
+            font-size: 1.6em; /* Increased font size */
+            margin-bottom: 10px;
+            color: red;
+        }
+        .options {
+            list-style: none;
+            padding: 0;
+        }
+        .options li {
+            margin: 5px 0;
+            color: blue;
+        }
+        .options li input {
+            margin-right: 10px;
+        }
+        .submit-button {
+            padding: 15px 25px;
+            font-size: 1.2em;
+            background-color: yellow;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover {
+            background-color: #d4d400;
+        }
+        .result {
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffd700;
+            border: 2px solid #fff;
+            border-radius: 15px;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>French Basics Exam</h1>
+    <div id="exam">
+        <div class="question">
+            <h2>1. How do you say "Hello" in French?</h2>
+            <ul class="options">
+                <li><input type="radio" name="q1" value="a"> a) Bonjour</li>
+                <li><input type="radio" name="q1" value="b"> b) Salut</li>
+                <li><input type="radio" name="q1" value="c"> c) Au revoir</li>
+                <li><input type="radio" name="q1" value="d"> d) Merci</li>
+            </ul>
+        </div>
+        <div class="question">
+            <h2>2. What is the French word for "One"?</h2>
+            <ul class="options">
+                <li><input type="radio" name="q2" value="a"> a) Un</li>
+                <li><input type="radio" name="q2" value="b"> b) Deux</li>
+                <li><input type="radio" name="q2" value="c"> c) Trois</li>
+                <li><input type="radio" name="q2" value="d"> d) Quatre</li>
+            </ul>
+        </div>
+        <div class="question">
+            <h2>3. How do you ask "How are you?" in French?</h2>
+            <ul class="options">
+                <li><input type="radio" name="q3" value="a"> a) Comment ça va?</li>
+                <li><input type="radio" name="q3" value="b"> b) Où est?</li>
+                <li><input type="radio" name="q3" value="c"> c) Quelle heure est-il?</li>
+                <li><input type="radio" name="q3" value="d"> d) Quel âge as-tu?</li>
+            </ul>
+        </div>
+        <div class="question">
+            <h2>4. What is the French word for "Thank you"?</h2>
+            <ul class="options">
+                <li><input type="radio" name="q4" value="a"> a) Merci</li>
+                <li><input type="radio" name="q4" value="b"> b) S'il vous plaît</li>
+                <li><input type="radio" name="q4" value="c"> c) Excusez-moi</li>
+                <li><input type="radio" name="q4" value="d"> d) Pardon</li>
+            </ul>
+        </div>
+        <div class="question">
+            <h2>5. How do you say "Goodbye" in French?</h2>
+            <ul class="options">
+                <li><input type="radio" name="q5" value="a"> a) Salut</li>
+                <li><input type="radio" name="q5" value="b"> b) Merci</li>
+                <li><input type="radio" name="q5" value="c"> c) Bonjour</li>
+                <li><input type="radio" name="q5" value="d"> d) Au revoir</li>
+            </ul>
+        </div>
+        <button class="submit-button" onclick="checkAnswers()">Submit</button>
+    </div>
+    <div id="result" class="result" style="display: none;"></div>
+
+    <script>
+        function checkAnswers() {
+            const answers = {
+                q1: 'a',
+                q2: 'a',
+                q3: 'a',
+                q4: 'a',
+                q5: 'd'
+            };
+            let score = 0;
+            for (const [question, answer] of Object.entries(answers)) {
+                const selected = document.querySelector(`input[name="${question}"]:checked`);
+                if (selected && selected.value === answer) {
+                    score++;
+                }
+            }
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').textContent = `You scored ${score} out of ${Object.keys(answers).length}`;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+ 
+
+
+

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Quiz</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #ff0000;
+            color: #0000ff;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #0000ff;
+        }
+        .question {
+            background-color: #008000;
+            border: 2px solid #ffff00;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .question:hover {
+            background-color: #98fb98;
+        }
+        button {
+            background-color: #008000;
+            color: #0000ff;
+            border: 2px solid #ffff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background-color: #006400;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 5px;
+            border: 2px solid #ffff00;
+            color: #0000ff;
+        }
+        #submit {
+            background-color: #ff4500;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+        }
+        #result {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Italian Quiz</h1>
+    <form id="quizForm">
+        <div class="question">
+            <h3>1. What is the Italian word for "dog"?</h3>
+            <button type="button" onclick="checkAnswer(1, 'Cane')">Cane</button>
+            <button type="button" onclick="checkAnswer(1, 'Gatto')">Gatto</button>
+            <button type="button" onclick="checkAnswer(1, 'Pecora')">Pecora</button>
+            <button type="button" onclick="checkAnswer(1, 'Mucca')">Mucca</button>
+        </div>
+        <div class="question">
+            <h3>2. How do you say "goodbye" in Italian?</h3>
+            <button type="button" onclick="checkAnswer(2, 'Arrivederci')">Arrivederci</button>
+            <button type="button" onclick="checkAnswer(2, 'Buongiorno')">Buongiorno</button>
+            <button type="button" onclick="checkAnswer(2, 'Grazie')">Grazie</button>
+            <button type="button" onclick="checkAnswer(2, 'Prego')">Prego</button>
+        </div>
+        <div class="question">
+            <h3>3. What is "milk" in Italian?</h3>
+            <button type="button" onclick="checkAnswer(3, 'Latte')">Latte</button>
+            <button type="button" onclick="checkAnswer(3, 'Acqua')">Acqua</button>
+            <button type="button" onclick="checkAnswer(3, 'Pane')">Pane</button>
+            <button type="button" onclick="checkAnswer(3, 'Formaggio')">Formaggio</button>
+        </div>
+        <div class="question">
+            <h3>4. How do you say "please" in Italian?</h3>
+            <button type="button" onclick="checkAnswer(4, 'Grazie')">Grazie</button>
+            <button type="button" onclick="checkAnswer(4, 'Per favore')">Per favore</button>
+            <button type="button" onclick="checkAnswer(4, 'Scusa')">Scusa</button>
+            <button type="button" onclick="checkAnswer(4, 'Arrivederci')">Arrivederci</button>
+        </div>
+        <div class="question">
+            <h3>5. Translate to Italian: "The boy drinks water."</h3>
+            <input type="text" id="q5">
+        </div>
+        <div class="question">
+            <h3>6. What is the plural of "donna" (woman)?</h3>
+            <input type="text" id="q6">
+        </div>
+        <div class="question">
+            <h3>7. Choose the correct article: __ ragazzo (the boy)</h3>
+            <button type="button" onclick="checkAnswer(7, 'Il')">Il</button>
+            <button type="button" onclick="checkAnswer(7, 'Lo')">Lo</button>
+            <button type="button" onclick="checkAnswer(7, 'La')">La</button>
+            <button type="button" onclick="checkAnswer(7, 'Gli')">Gli</button>
+        </div>
+        <div class="question">
+            <h3>8. Fill in the blank: "Lui __ un uomo." (He is a man)</h3>
+            <input type="text" id="q8">
+        </div>
+        <div class="question">
+            <h3>9. What does "buonasera" mean?</h3>
+            <button type="button" onclick="checkAnswer(9, 'Good evening')">Good evening</button>
+            <button type="button" onclick="checkAnswer(9, 'Good morning')">Good morning</button>
+            <button type="button" onclick="checkAnswer(9, 'Good night')">Good night</button>
+            <button type="button" onclick="checkAnswer(9, 'Good afternoon')">Good afternoon</button>
+        </div>
+        <div class="question">
+            <h3>10. Translate to Italian: "I eat bread."</h3>
+            <input type="text" id="q10">
+        </div>
+        <div class="question">
+            <h3>11. How do you say "cheese" in Italian?</h3>
+            <button type="button" onclick="checkAnswer(11, 'Formaggio')">Formaggio</button>
+            <button type="button" onclick="checkAnswer(11, 'Latte')">Latte</button>
+            <button type="button" onclick="checkAnswer(11, 'Pane')">Pane</button>
+            <button type="button" onclick="checkAnswer(11, 'Carne')">Carne</button>
+        </div>
+        <div class="question">
+            <h3>12. What is the Italian word for "water"?</h3>
+            <input type="text" id="q12">
+        </div>
+        <div class="question">
+            <h3>13. Translate to Italian: "They are children."</h3>
+            <input type="text" id="q13">
+        </div>
+        <div class="question">
+            <h3>14. What is the plural of "uomo" (man)?</h3>
+            <input type="text" id="q14">
+        </div>
+        <div class="question">
+            <h3>15. Choose the correct form: __ siamo felici. (We are happy)</h3>
+            <button type="button" onclick="checkAnswer(15, 'Noi')">Noi</button>
+            <button type="button" onclick="checkAnswer(15, 'Voi')">Voi</button>
+            <button type="button" onclick="checkAnswer(15, 'Loro')">Loro</button>
+            <button type="button" onclick="checkAnswer(15, 'Io')">Io</button>
+        </div>
+        <button type="button" id="submit" onclick="calculateScore()">Submit</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        const correctAnswers = {
+            1: 'Cane',
+            2: 'Arrivederci',
+            3: 'Latte',
+            4: 'Per favore',
+            5: 'Il ragazzo beve acqua',
+            6: 'Donne',
+            7: 'Il',
+            8: 'è',
+            9: 'Good evening',
+            10: 'Mangio pane',
+            11: 'Formaggio',
+            12: 'Acqua',
+            13: 'Sono bambini',
+            14: 'Uomini',
+            15: 'Noi'
+        };
+
+        function checkAnswer(questionNumber, answer) {
+            const userAnswer = answer.trim();
+            const correctAnswer = correctAnswers[questionNumber].trim();
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                document.getElementById(`q${questionNumber}`).style.backgroundColor = 'green';
+            } else {
+                document.getElementById(`q${questionNumber}`).style.backgroundColor = 'red';
+            }
+        }
+
+        function calculateScore() {
+            let score = 0;
+            for (let i = 1; i <= 15; i++) {
+                const userAnswer = document.getElementById(`q[_{{{CITATION{{{_1{](https://github.com/dolma2000/idm232-dys43/tree/ac6dadba13b9b94b52b1e7a40ae82080c2e53062/category%2Fitalian.php)
