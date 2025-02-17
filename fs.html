@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feuille de travail sur l'école</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Comic Sans', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            direction: ltr;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #0056b3;
+        }
+        .exercise, .study-section {
+            margin: 20px;
+            padding: 15px;
+            background-color: #e6f7ff;
+            border: 1px solid #0056b3;
+            border-radius: 10px;
+        }
+        .exercise h2, .study-section h2 {
+            color: #0056b3;
+        }
+        .study-section p {
+            margin: 10px 0;
+        }
+        .study-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .study-section li {
+            background-color: #cceeff;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        input[type="text"], select {
+            width: 100px;
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #0056b3;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #003d7a;
+        }
+    </style>
+    <script>
+        function gradeExam() {
+            let score = 0;
+
+            // Question 1 answers
+            const q1_1 = document.getElementsByName('q1_1')[0].value.toLowerCase();
+            const q1_2 = document.getElementsByName('q1_2')[0].value.toLowerCase();
+            const q2_1 = document.getElementsByName('q2_1')[0].value.toLowerCase();
+            const q2_2 = document.getElementsByName('q2_2')[0].value.toLowerCase();
+            const q3_1 = document.getElementsByName('q3_1')[0].value.toLowerCase();
+            const q3_2 = document.getElementsByName('q3_2')[0].value.toLowerCase();
+
+            if (q1_1 === 'écris') score++;
+            if (q1_2 === 'écris') score++;
+            if (q2_1 === 'lis') score++;
+            if (q2_2 === 'lis') score++;
+            if (q3_1 === 'mange') score++;
+            if (q3_2 === 'manges') score++;
+
+            // Question 2 answers
+            const q4_1 = document.getElementsByName('q4_1')[0].value.toLowerCase();
+            const q4_2 = document.getElementsByName('q4_2')[0].value.toLowerCase();
+            const q4_3 = document.getElementsByName('q4_3')[0].value.toLowerCase();
+            const q4_4 = document.getElementsByName('q4_4')[0].value.toLowerCase();
+
+            if (q4_1 === 'livre') score++;
+            if (q4_2 === 'sandwich') score++;
+            if (q4_3 === 'classe') score++;
+            if (q4_4 === 'lettre') score++;
+
+            // Question 3 answers
+            const q5_1 = document.getElementsByName('q5_1')[0].value;
+            const q5_2 = document.getElementsByName('q5_2')[0].value;
+            const q5_3 = document.getElementsByName('q5_3')[0].value;
+            const q5_4 = document.getElementsByName('q5_4')[0].value;
+
+            if (q5_1 === 'a') score++;
+            if (q5_2 === 'c') score++;
+            if (q5_3 === 'd') score++;
+            if (q5_4 === 'b') score++;
+
+            alert(`Total score: ${score} / 14`);
+        }
+    </script>
+</head>
+<body>
+    <h1>Feuille de travail sur l'école</h1>
+
+    <div class="study-section">
+        <h2>Study Section</h2>
+        <p>Voici quelques mots et verbes utiles que nous allons apprendre :</p>
+        <ul>
+            <li><strong>Écrire</strong> (to write): j'écris, tu écris</li>
+            <li><strong>Lire</strong> (to read): je lis, tu lis</li>
+            <li><strong>Manger</strong> (to eat): je mange, tu manges</li>
+            <li><strong>Un livre</strong> (a book)</li>
+            <li><strong>Une chaise</strong> (a chair)</li>
+            <li><strong>Une classe</strong> (a class/lesson)</li>
+            <li><strong>Un sandwich</strong> (a sandwich)</li>
+        </ul>
+    </div>
+
+    <div class="exercise">
+        <h2>1. Complete the sentences with the correct verb</h2>
+        <p>Tu <input type="text" name="q1_1"> une lettre. <br> Je <input type="text" name="q1_2"> un poème.</p>
+        <p>Je <input type="text" name="q2_1"> un livre. <br> Tu <input type="text" name="q2_2"> un magazine.</p>
+        <p>Je <input type="text" name="q3_1"> un sandwich à la pause déjeuner. <br> Tu <input type="text" name="q3_2"> une pomme à la pause déjeuner.</p>
+    </div>
+
+    <div class="exercise">
+        <h2>2. Fill in the blanks with the correct word</h2>
+        <p>Je lis un <input type="text" name="q4_1" placeholder="...">. <br> Tu manges un <input type="text" name="q4_2" placeholder="...">.</p>
+        <p>Nous sommes dans une <input type="text" name="q4_3" placeholder="...">. <br> Il écrit une <input type="text" name="q4_4" placeholder="...">.</p>
+    </div>
+
+    <div class="exercise">
+        <h2>3. Match the French words to their English meanings</h2>
+        <p>Select the English meaning from the dropdown next to each French word:</p>
+        <div>
+            <p>1. Livre <select name="q5_1">
+                <option value="">Select</option>
+                <option value="a">Book</option>
+                <option value="b">Sandwich</option>
+                <option value="c">Chair</option>
+                <option value="d">Class</option>
+            </select></p>
+            <p>2. Chaise <select name="q5_2">
+                <option value="">Select</option>
+                <option value="a">Book</option>
+                <option value="b">Sandwich</option>
+                <option value="c">Chair</option>
+                <option value="d">Class</option>
+            </select></p>
+            <p>3. Classe <select name="q5_3">
+                <option value="">Select</option>
+                <option value="a">Book</option>
+                <option value="b">Sandwich</option>
+                <option value="c">Chair</option>
+                <option value="d">Class</option>
+            </select></p>
+            <p>4. Sandwich <select name="q5_4">
+                <option value="">Select</option>
+                <option value="a">Book</option>
+                <option value="b">Sandwich</option>
+                <option value="c">Chair</option>
+                <option value="d">Class</option>
+            </select></p>
+        </div>
+    </div>
+
+    <div class="exercise">
+        <button type="button" onclick="gradeExam()">Submit</button>
+    </div>
+</body>
+</html>
+
+
+
