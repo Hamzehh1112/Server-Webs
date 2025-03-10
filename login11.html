@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows XP Login</title>
+    <style>
+        body {
+            background-color: #1c5a99;
+            font-family: 'Comic Sans MS', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, #1c5a99, #4c8cbe);
+        }
+        .login-box {
+            background: rgba(236, 233, 216, 0.7); /* Semi-transparent sand color */
+            border: 3px solid #004a80;
+            border-radius: 10px;
+            padding: 30px;
+            width: 400px; /* Increased width */
+            text-align: center;
+            box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.4); /* Deep shadow for a sleek look */
+            backdrop-filter: blur(10px); /* Glass effect */
+            background-image: url('https://www.transparenttextures.com/patterns/45-degree-fabric-light.png'); /* Subtle fabric texture */
+            background-size: 30px 30px; /* Small repeating texture */
+        }
+        .title-bar {
+            background-color: rgba(0, 74, 128, 0.8); /* Slight transparency for the title bar */
+            color: white;
+            padding: 10px;
+            font-size: 16px; /* Larger font size for the title */
+            font-weight: bold;
+            text-align: left;
+            border-radius: 5px 5px 0 0;
+            backdrop-filter: blur(5px); /* Glass effect */
+            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+        }
+        .profile-pic {
+            width: 100%; /* Make the profile picture take up the full width */
+            height: 250px; /* Set a fixed height */
+            margin: 0 auto; /* Center the profile picture */
+            border: 3px solid #808080;
+            border-radius: 5px;
+            background: url('1111.png') no-repeat center center; /* Center the background image */
+            background-size: cover; /* Ensure the image covers the entire area without distortion */
+        }
+        .input-container {
+            text-align: left;
+            margin: 10px 20px;
+        }
+        label {
+            font-size: 14px; /* Larger font size */
+            color: black;
+        }
+        input {
+            width: 95%;
+            padding: 6px; /* Increased padding */
+            margin: 8px 0; /* Increased margin */
+            border: 1px solid #808080;
+            border-radius: 3px;
+            background-color: white;
+            font-size: 14px; /* Increased font size */
+            opacity: 0.8; /* Slight opacity for the glass effect */
+            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.1); /* Inner shadow for depth */
+        }
+        .buttons {
+            margin-top: 20px; /* Increased margin */
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            background-color: rgba(0, 74, 128, 0.8); /* Semi-transparent blue */
+            color: white;
+            padding: 8px 18px; /* Increased padding */
+            border: 1px solid #002d5b;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px; /* Larger font size */
+            backdrop-filter: blur(5px); /* Glass effect */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Soft shadow for buttons */
+        }
+        button:hover {
+            background-color: rgba(0, 58, 98, 0.8);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* More pronounced shadow on hover */
+        }
+    </style>
+    <script>
+        function validateLogin() {
+            const allowedUsers = ["Hamzeh", "Hala", "Lana", "Zain", "Leena", "Abood", "Sawsan", "Bages"];
+            const password = "12345678";
+            
+            let username = document.getElementById("username").value;
+            let userPassword = document.getElementById("password").value;
+            
+            if (allowedUsers.includes(username) && userPassword === password) {
+                window.location.href = "gam6.html";
+            } else {
+                alert("Invalid username or password!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="login-box">
+        <div class="title-bar">Connect Dial-Up Connection</div>
+        <div class="profile-pic"></div>
+        <div class="input-container">
+            <label for="username">User name:</label>
+            <input type="text" id="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+        </div>
+        <div class="buttons">
+            <button type="button" onclick="validateLogin()">Login</button>
+            <button type="button">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
