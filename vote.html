@@ -79,9 +79,12 @@
 
         // Log out function
         function logout() {
+            console.log("Logging out..."); // Debugging: Check if logout is triggered
             auth.signOut().then(() => {
+                console.log("Logout successful"); // Debugging: Log when logout is successful
                 window.location.href = "login.html"; // Redirect to login page after log out
             }).catch((error) => {
+                console.error("Logout error: " + error.message); // Debugging: Log any errors that occur during logout
                 alert("Error: " + error.message);
             });
         }
@@ -156,4 +159,3 @@
 
 </body>
 </html>
-
