@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Sign Up Page</title>
+    <title>Login Page</title>
     <script type="module">
-        // Import Firebase modules
+        // Firebase initialization script
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDKGqFQaZ31sM9wG3cuxvdVfxonjRAlNzA",
             authDomain: "poling-system-1a492.firebaseapp.com",
@@ -21,52 +20,32 @@
             measurementId: "G-F6Y81RB2L9"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Sign Up function
-        async function signUp(event) {
-            event.preventDefault();
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                alert("Sign up successful!");
-                window.location.href = "vote.html"; // Redirect to the voting page after sign up
-            } catch (error) {
-                alert("Error: " + error.message);
-            }
-        }
-
         // Login function
-        async function login(event) {
-            event.preventDefault();
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                alert("Login successful!");
-                window.location.href = "vote.html"; // Redirect to the voting page after login
-            } catch (error) {
-                alert("Error: " + error.message);
-            }
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Logged in successfully!");
+                    window.location.href = "vote.html"; // Redirect to vote page after login
+                })
+                .catch((error) => {
+                    console.error("Error during login:", error.message);
+                    alert("Failed to log in. Please check your credentials.");
+                });
         }
+
+        window.login = login;
     </script>
 </head>
 <body>
-    <h1>Login or Sign Up</h1>
-
-    <form id="authForm">
-        <label for="email">Email:</label>
-        <input type="email" id="email" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br><br>
-
-        <button onclick="login(event)">Login</button>
-        <button onclick="signUp(event)">Sign Up</button>
-    </form>
+    <h1>Login</h1>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="login()">Login</button>
 </body>
 </html>
