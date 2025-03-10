@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Poll System</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #ff6347;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4682b4;
+            color: white;
+        }
+        button:hover {
+            background-color: #4169e1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Login to the Poll System</h1>
+
+    <!-- Sign Up Form -->
+    <h2>Create an Account</h2>
+    <input type="email" id="signupEmail" placeholder="Email" required><br>
+    <input type="password" id="signupPassword" placeholder="Password" required><br>
+    <button onclick="signup()">Sign Up</button>
+
+    <!-- Login Form -->
+    <h2>Or Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" required><br>
+    <input type="password" id="loginPassword" placeholder="Password" required><br>
+    <button onclick="login()">Login</button>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKGqFQaZ31sM9wG3cuxvdVfxonjRAlNzA",
+            authDomain: "poling-system-1a492.firebaseapp.com",
+            projectId: "poling-system-1a492",
+            storageBucket: "poling-system-1a492.appspot.com",
+            messagingSenderId: "953814590616",
+            appId: "1:953814590616:web:ad3dcb96516f7f5e30dced",
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Sign Up Function
+        function signup() {
+            const email = document.getElementById("signupEmail").value;
+            const password = document.getElementById("signupPassword").value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Successfully signed up
+                    alert("Account created successfully!");
+                    window.location.href = "vote.html"; // Redirect to the polling page after sign-up
+                })
+                .catch((error) => {
+                    const errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        }
+
+        // Login Function
+        function login() {
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Successfully logged in
+                    alert("Logged in successfully!");
+                    window.location.href = "vote.html"; // Redirect to the polling page after login
+                })
+                .catch((error) => {
+                    const errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        }
+    </script>
+
+</body>
+</html>

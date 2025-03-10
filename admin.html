@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poll Management</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #ff6347;
+        }
+        .content {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 15px;
+            margin-top: 50px;
+            border: 2px solid #4682b4;
+        }
+        button {
+            background-color: #4682b4;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #4169e1;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            margin: 10px;
+            width: 70%;
+            border: 2px solid #4682b4;
+            border-radius: 5px;
+        }
+        .poll-list {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Polls</h1>
+    <div class="content">
+        <h2>Create a New Poll</h2>
+        <input type="text" id="pollTopic" placeholder="Enter Poll Topic">
+        <button onclick="addPoll()">Add Poll</button>
+
+        <h2>Existing Polls</h2>
+        <div class="poll-list" id="pollList">
+            <!-- Polls will be listed here -->
+        </div>
+
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKGqFQaZ31sM9wG3cuxvdVfxonjRAlNzA",
+            authDomain: "poling-system-1a492.firebaseapp.com",
+            projectId: "poling-system-1a492",
+            storageBucket: "poling-system-1a492.appspot.com",
+            messagingSenderId: "953814590616",
+            appId: "1:953814590616:web:ad3dcb96516f7f5e30dced",
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // Add poll function
+        function addPoll() {
+            const pollTopic = document.getElementById('pollTopic').value;
+            if (pollTopic) {
+                db.ref('polls').push({
+                    topic: pollTopic,
+                });
+                document.getElementById('pollTopic').value = ''; // Clear input
+            }
+        }
+
+        // Display existing polls
+        function displayPolls() {
+            const pollList = document.getElementById('pollList');
+            db.ref('polls').on('value', (snapshot) => {
+                pollList.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const pollData = childSnapshot.val();
+                    const pollItem = document.createElement('div');
+                    pollItem.innerHTML = `
+                        <span>${pollData.topic}</span>
+                        <button onclick="deletePoll('${childSnapshot.key}')">Delete</button>
+                    `;
+                    pollList.appendChild(pollItem);
+                });
+            });
+        }
+
+        // Delete poll function
+        function deletePoll(pollId) {
+            db.ref('polls/' + pollId).remove();
+        }
+
+        // Logout function
+        function logout() {
+            auth.signOut()
+                .then(() => {
+                    window.location.href = 'login.html'; // Redirect to login page
+                })
+                .catch(error => {
+                    alert('Logout failed: ' + error.message);
+                });
+        }
+
+        // Display polls when the page loads
+        window.onload = displayPolls;
+    </script>
+</body>
+</html>

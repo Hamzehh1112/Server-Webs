@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polling System</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #ff6347;
+        }
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #4169e1;
+        }
+        .polls {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to the Polling System</h1>
+
+    <div id="user-info">
+        <button onclick="logout()">Log Out</button>
+    </div>
+
+    <div id="polls-section" class="polls">
+        <h2>Polls</h2>
+        <div id="polls-container"></div>
+    </div>
+
+    <div id="admin-section" style="display: none;">
+        <h2>Admin Control: Create New Poll</h2>
+        <input type="text" id="new-poll-topic" placeholder="New Poll Topic" required><br>
+        <button onclick="createPoll()">Create Poll</button>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKGqFQaZ31sM9wG3cuxvdVfxonjRAlNzA",
+            authDomain: "poling-system-1a492.firebaseapp.com",
+            projectId: "poling-system-1a492",
+            storageBucket: "poling-system-1a492.appspot.com",
+            messagingSenderId: "953814590616",
+            appId: "1:953814590616:web:ad3dcb96516f7f5e30dced",
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // Monitor authentication state
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is logged in, show polls and admin controls
+                document.getElementById("user-info").style.display = "block";
+                loadPolls();
+                checkAdmin(user.email);
+            } else {
+                // User is not logged in, redirect to login page
+                window.location.href = "login.html";
+            }
+        });
+
+        // Log out function
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = "login.html"; // Redirect to login page after log out
+            }).catch((error) => {
+                alert("Error: " + error.message);
+            });
+        }
+
+        // Check if user is admin (only you can manage polls)
+        function checkAdmin(userEmail) {
+            const adminEmail = "youremail@example.com"; // Replace with your email
+            if (userEmail === adminEmail) {
+                document.getElementById("admin-section").style.display = "block";
+            } else {
+                document.getElementById("admin-section").style.display = "none";
+            }
+        }
+
+        // Load polls from Firebase Database
+        function loadPolls() {
+            const pollsRef = database.ref("polls");
+            pollsRef.once("value", (snapshot) => {
+                const pollsData = snapshot.val();
+                const pollsContainer = document.getElementById("polls-container");
+                pollsContainer.innerHTML = ''; // Clear previous polls
+
+                for (const key in pollsData) {
+                    const poll = pollsData[key];
+                    const pollElement = document.createElement("div");
+                    pollElement.innerHTML = `
+                        <h3>${poll.topic}</h3>
+                        <button onclick="vote('${key}', 'Yes')">Yes</button>
+                        <button onclick="vote('${key}', 'No')">No</button>
+                        <hr>
+                    `;
+                    pollsContainer.appendChild(pollElement);
+                }
+            });
+        }
+
+        // Vote function
+        function vote(pollId, voteOption) {
+            const user = auth.currentUser;
+            if (user) {
+                const votesRef = database.ref(`polls/${pollId}/votes/${user.uid}`);
+                votesRef.set(voteOption).then(() => {
+                    alert("Vote submitted!");
+                    loadPolls();
+                }).catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            }
+        }
+
+        // Create a new poll (admin only)
+        function createPoll() {
+            const newPollTopic = document.getElementById("new-poll-topic").value;
+            if (newPollTopic.trim() !== "") {
+                const pollsRef = database.ref("polls");
+                const newPollRef = pollsRef.push();
+                newPollRef.set({
+                    topic: newPollTopic,
+                    votes: {}
+                }).then(() => {
+                    alert("New poll created!");
+                    document.getElementById("new-poll-topic").value = ""; // Clear the input
+                    loadPolls(); // Reload the polls
+                }).catch((error) => {
+                    alert("Error: " + error.message);
+                });
+            } else {
+                alert("Please enter a poll topic.");
+            }
+        }
+    </script>
+
+</body>
+</html>
+
