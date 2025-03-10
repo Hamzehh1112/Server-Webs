@@ -3,67 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polling System</title>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
-</head>
-<body style="font-family: 'Comic Sans MS', cursive, sans-serif; background-color: #f2f2f2; padding: 20px; text-align: center;">
-    <h1>Welcome to the Polling System</h1>
-    
-    <!-- Polling content -->
-    <div>
-        <h2>Poll Topics</h2>
-        <!-- Your poll topics go here -->
-    </div>
+    <title>Vote Page</title>
+    <!-- Add Firebase SDK -->
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-    <!-- Log out button -->
-    <div id="user-info">
-        <button onclick="logout()">Log Out</button>
-    </div>
-
-    <script>
         // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDKGqFQaZ31sM9wG3cuxvdVfxonjRAlNzA",
-            authDomain: "poling-system-1a492.firebaseapp.com",
-            projectId: "poling-system-1a492",
-            storageBucket: "poling-system-1a492.appspot.com",
-            messagingSenderId: "953814590616",
-            appId: "1:953814590616:web:ad3dcb96516f7f5e30dced",
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            databaseURL: "YOUR_DATABASE_URL"
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
 
-        // Check if the user is logged in, and if not, redirect to login page
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                console.log('User is logged in');
-            } else {
-                console.log('No user is logged in');
-                window.location.href = "login.html";  // Redirect to login page
-            }
-        });
-
-        // Simple logout function
+        // Logout function
         function logout() {
-            const user = firebase.auth().currentUser;
-            if (user) {
-                firebase.auth().signOut()
-                    .then(function() {
-                        alert('Logged out successfully');
-                        window.location.href = "login.html";  // Redirect to login page after logging out
-                    })
-                    .catch(function(error) {
-                        alert('Error logging out: ' + error.message);
-                        console.log(error);
-                    });
-            } else {
-                alert('No user is logged in!');
-            }
+            signOut(auth)
+                .then(() => {
+                    alert("You have logged out successfully!");
+                })
+                .catch((error) => {
+                    console.error("Logout failed:", error.message);
+                });
         }
+
+        // Make the logout function accessible
+        window.logout = logout;
     </script>
+</head>
+<body>
+    <h1>Welcome to the Voting Page</h1>
+    <button onclick="logout()">Logout</button>
 </body>
 </html>
