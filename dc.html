@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Center - 2000s Style</title>
+    <style>
+        body {
+            background: url('https://www.transparenttextures.com/patterns/triangle.png') repeat;
+            font-family: 'Comic Sans MS', sans-serif;
+            color: #000;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #FF4500;
+            font-size: 48px;
+            text-shadow: 3px 3px 2px #000;
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #008B8B;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .download-list {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            justify-items: center;
+        }
+
+        .download-item {
+            background-color: #F0F8FF;
+            border: 3px solid #0000FF;
+            padding: 20px;
+            margin: 20px;
+            width: 200px;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .download-item h2 {
+            color: #FF6347;
+            font-size: 24px;
+        }
+
+        .download-item p {
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .download-item a {
+            font-size: 18px;
+            display: inline-block;
+            background-color: #FF1493;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .download-item a:hover {
+            background-color: #FF69B4;
+        }
+
+        .scrolling-text {
+            color: #00FFFF;
+            font-size: 20px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            animation: scrolling 10s linear infinite;
+        }
+
+        @keyframes scrolling {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="scrolling-text">
+        <marquee>Welcome to the 2000s Download Center! Flashy, retro, and fun! :)</marquee>
+    </div>
+
+    <div class="container">
+        <h1>Welcome to the Download Center</h1>
+        <h2>Choose the files you want to download:</h2>
+
+        <div class="download-list">
+            <div class="download-item">
+                <h2>F1 racing Video 1</h2>
+                <p>Fun 24 Min F1 Racing Video. Get it now!</p>
+                <a href="car racing.mp4" download>Download File 1</a>
+            </div>
+
+            <div class="download-item">
+                <h2>Purble Palce</h2>
+                <p>Purble place Game. Grab it quickly!</p>
+                <a href="PurblePlaced.exe" download>Download Purble Place</a>
+            </div>
+
+            <div class="download-item">
+                <h2>Microsoft Media Center</h2>
+                <p>Enjoy it while watching!</p>
+                <a href="wmcsetup-x64.msi" download>Download MMC</a>
+            </div>
+
+            <div class="download-item">
+                <h2>Clarence Episodes</h2>
+                <p>Don't miss out watching!</p>
+                <a href="Clarence Episodes" download>Download Episodes</a>
+            </div>
+
+            <div class="download-item">
+                <h2>File 5</h2>
+                <p>Description of file 5. Get it now!</p>
+                <a href="files/file5.pdf" download>Download File 5</a>
+            </div>
+
+            <div class="download-item">
+                <h2>File 6</h2>
+                <p>Description of file 6. Grab it quickly!</p>
+                <a href="files/file6.jpg" download>Download File 6</a>
+            </div>
+
+            <div class="download-item">
+                <h2>File 7</h2>
+                <p>Description of file 7. Don't miss out!</p>
+                <a href="files/file7.zip" download>Download File 7</a>
+            </div>
+
+            <div class="download-item">
+                <h2>File 8</h2>
+                <p>Description of file 8. Get it now!</p>
+                <a href="files/file8.pdf" download>Download File 8</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
