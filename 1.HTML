@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Poll - 2000s Style</title>
+    <style>
+      body {
+        font-family: "Comic Sans MS", cursive;
+        background-image: url('background.gif'); /* Ensure this file exists in the same folder */
+        background-size: cover;
+        color: #ff00ff;
+        text-align: center;
+      }
+      .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 5px solid yellow;
+        background-color: #ffffcc;
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+      }
+      button {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: 4px solid black;
+        cursor: pointer;
+      }
+      .yes-btn {
+        background-color: green;
+        color: white;
+      }
+      .no-btn {
+        background-color: red;
+        color: white;
+      }
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        border: 2px solid black;
+        position: relative;
+        background: #ddd;
+      }
+      .yes-bar {
+        background-color: green;
+        height: 100%;
+      }
+      .no-bar {
+        background-color: red;
+        height: 100%;
+      }
+    </style>
+    <script>
+      async function vote(option) {
+        let response = await fetch("votes.json");
+        let votes = await response.json();
+        votes[option]++;
+        document.getElementById("yes-count").innerText = votes.yes;
+        document.getElementById("no-count").innerText = votes.no;
+        let totalVotes = votes.yes + votes.no;
+        document.getElementById("yes-bar").style.width = (votes.yes / totalVotes) * 100 + "%";
+        document.getElementById("no-bar").style.width = (votes.no / totalVotes) * 100 + "%";
+      }
+    </script>
+  </head>
+  <body>
+    <marquee><h1>🔥 Welcome to the Ultimate Poll! 🔥</h1></marquee>
+    <div class="container">
+      <h2>Do you like this New Website?</h2>
+      <button class="yes-btn" onclick="vote('yes')">YES!</button>
+      <button class="no-btn" onclick="vote('no')">NO!</button>
+      <p>Yes: <span id="yes-count">0</span></p>
+      <div class="progress-bar"><div id="yes-bar" class="yes-bar" style="width: 0%"></div></div>
+      <p>No: <span id="no-count">0</span></p>
+      <div class="progress-bar"><div id="no-bar" class="no-bar" style="width: 0%"></div></div>
+    </div>
+    <marquee><h3>✨ Vote Now and Make History! ✨</h3></marquee>
+  </body>
+</html>
+
