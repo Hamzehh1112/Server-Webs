@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Verbes - 2000s Style</title>
+    <style>
+        body {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            background-color: #FFD700;
+            text-align: center;
+            color: #000080;
+        }
+        .quiz-container {
+            width: 60%;
+            margin: auto;
+            background-color: #FF69B4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px #888;
+        }
+        button {
+            font-size: 20px;
+            background-color: #008000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #006400;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz de Conjugaison (Je / Tu)</h1>
+    <div class="quiz-container">
+        <form id="quizForm">
+            <ol>
+                <li>Je ____ un stylo. (avoir)<br><input type="radio" name="q1" value="ai"> ai <input type="radio" name="q1" value="as"> as</li>
+                <li>Tu ____ une pomme. (avoir)<br><input type="radio" name="q2" value="ai"> ai <input type="radio" name="q2" value="as"> as</li>
+                <li>Je ____ content. (être)<br><input type="radio" name="q3" value="suis"> suis <input type="radio" name="q3" value="es"> es</li>
+                <li>Tu ____ fatigué ? (être)<br><input type="radio" name="q4" value="suis"> suis <input type="radio" name="q4" value="es"> es</li>
+                <li>Je ____ un gâteau. (vouloir)<br><input type="radio" name="q5" value="veux"> veux <input type="radio" name="q5" value="veux"> veux</li>
+                <li>Tu ____ une glace ? (vouloir)<br><input type="radio" name="q6" value="veux"> veux <input type="radio" name="q6" value="veux"> veux</li>
+                <li>Je ____ à la maison. (aller)<br><input type="radio" name="q7" value="vais"> vais <input type="radio" name="q7" value="vas"> vas</li>
+                <li>Tu ____ bien ? (aller)<br><input type="radio" name="q8" value="vais"> vais <input type="radio" name="q8" value="vas"> vas</li>
+                <li>Je ____ une banane. (manger)<br><input type="radio" name="q9" value="mange"> mange <input type="radio" name="q9" value="manges"> manges</li>
+                <li>Tu ____ un sandwich. (manger)<br><input type="radio" name="q10" value="mange"> mange <input type="radio" name="q10" value="manges"> manges</li>
+                <li>Je ____ le chocolat. (aimer)<br><input type="radio" name="q11" value="aime"> aime <input type="radio" name="q11" value="aimes"> aimes</li>
+                <li>Tu ____ les chats ? (aimer)<br><input type="radio" name="q12" value="aime"> aime <input type="radio" name="q12" value="aimes"> aimes</li>
+                <li>Je ____ le jus d'orange. (aimer)<br><input type="radio" name="q13" value="aime"> aime <input type="radio" name="q13" value="aimes"> aimes</li>
+                <li>Tu ____ la musique ? (aimer)<br><input type="radio" name="q14" value="aime"> aime <input type="radio" name="q14" value="aimes"> aimes</li>
+                <li>Je ____ une nouvelle veste. (vouloir)<br><input type="radio" name="q15" value="veux"> veux <input type="radio" name="q15" value="veux"> veux</li>
+                <li>Tu ____ voir la mer ? (vouloir)<br><input type="radio" name="q16" value="veux"> veux <input type="radio" name="q16" value="veux"> veux</li>
+                <li>Je ____ au parc. (aller)<br><input type="radio" name="q17" value="vais"> vais <input type="radio" name="q17" value="vas"> vas</li>
+                <li>Tu ____ chez moi ce soir ? (aller)<br><input type="radio" name="q18" value="vais"> vais <input type="radio" name="q18" value="vas"> vas</li>
+                <li>Je ____ du pain. (manger)<br><input type="radio" name="q19" value="mange"> mange <input type="radio" name="q19" value="manges"> manges</li>
+                <li>Tu ____ du fromage ? (manger)<br><input type="radio" name="q20" value="mange"> mange <input type="radio" name="q20" value="manges"> manges</li>
+                <li>Je ____ une chanson. (aimer)<br><input type="radio" name="q21" value="aime"> aime <input type="radio" name="q21" value="aimes"> aimes</li>
+                <li>Tu ____ ce livre ? (aimer)<br><input type="radio" name="q22" value="aime"> aime <input type="radio" name="q22" value="aimes"> aimes</li>
+            </ol>
+            <button type="button" onclick="checkAnswers()">Vérifier mes réponses</button>
+        </form>
+        <p id="result"></p>
+    </div>
+</body>
+</html>
