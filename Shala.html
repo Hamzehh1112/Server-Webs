@@ -1,8 +1,44 @@
 <html>
 <title>Hala's Homeworks</title>
 <body bgcolor="#E81C92">
-</font size="5" face="comic sans ms">
-<center><font size="6">Homeworks:</font></center><br>
+<font face="Comic sans ms">
+  <script>
+       function getGreeting(){
+         const now = new Date();
+         const h = now.getHours(); // 0-23
+         const m = now.getMinutes();
+         const total = h * 60 + m;
+         const morningStart = 5 * 60;           // 5:00
+         const morningEnd   = 11 * 60 + 59;     // 11:59
+         const afternoonStart = 12 * 60;        // 12:00
+         const afternoonEnd   = 19 * 60 + 15;   // 19:15
+         // night is the remaining range: 19:16 - 4:59 (wraps past midnight)
+         if (total >= morningStart && total <= morningEnd) {
+           return 'Good morning';
+         } else if (total >= afternoonStart && total <= afternoonEnd) {
+           return 'Good afternoon';
+         } else {
+           return 'Goodnight';
+         }
+       }
+
+       function getDateString() {
+         const now = new Date();
+         return now.toLocaleDateString(undefined, {
+           weekday: 'long',
+           year: 'numeric',
+           month: 'long',
+           day: 'numeric'
+         });
+       }
+
+       document.addEventListener('DOMContentLoaded', function () {
+         document.getElementById('greeting').textContent = getGreeting();
+         document.getElementById('date').textContent = getDateString();
+       });
+     </script>
+<center><h1 Id="greeting"></h1></center><br>
+  <h2>Homeworks</h2>
 None<br><br>
 Resources:<br>
 -<a href="MP7.html">7 multiplication table</a><br>
@@ -10,4 +46,5 @@ Resources:<br>
 </font>
 </body>
 </html>
+
 
