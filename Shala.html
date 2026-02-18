@@ -14,11 +14,11 @@
          const afternoonEnd   = 19 * 60 + 15;   // 19:15
          // night is the remaining range: 19:16 - 4:59 (wraps past midnight)
          if (total >= morningStart && total <= morningEnd) {
-           return 'Good morning';
+           return 'Good morning Hala';
          } else if (total >= afternoonStart && total <= afternoonEnd) {
-           return 'Good afternoon';
+           return 'Good afternoon Hala';
          } else {
-           return 'Goodnight';
+           return 'Goodnight Hala';
          }
        }
 
@@ -37,7 +37,7 @@
          document.getElementById('date').textContent = getDateString();
        });
      </script>
-<center><h1 Id="greeting"> Hala</h1></center><br>
+<center><h1 Id="greeting"></h1></center><br>
 <font size="5">Homeworks:<br>
 None<br><br>
 Resources:<br>
@@ -46,6 +46,7 @@ Resources:<br>
 </font>
 </body>
 </html>
+
 
 
 
