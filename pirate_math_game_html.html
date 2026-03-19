@@ -83,6 +83,7 @@
         cursor: pointer;
         background: linear-gradient(45deg, gold, orange);
         color: black;
+        margin-right: 10px;
     }
 
     .result { margin-top: 15px; font-size: 22px; }
@@ -139,7 +140,6 @@ function generateQuestions() {
     for (let i = 0; i < 10; i++) {
         let a, b;
 
-        // Island 3 = Boss Fight, harder numbers
         if(currentIsland === 3){
             const hardPairs = [[7,8],[9,6],[8,9],[6,7],[10,10]];
             let pair = hardPairs[Math.floor(Math.random()*hardPairs.length)];
@@ -183,12 +183,15 @@ function nextQuestion() {
             unlockedIsland++;
             document.getElementById("island" + unlockedIsland).classList.remove("locked");
         }
+
         saveProgress();
+
         setTimeout(() => {
             document.getElementById("gameScreen").style.display = "none";
             document.getElementById("mapScreen").style.display = "block";
             document.getElementById("story").innerText = "🗺️ Choose your next island!";
         }, 1200);
+
         return;
     }
 
@@ -202,7 +205,6 @@ function nextQuestion() {
 function submitAnswer() {
     let userAnswer = Number(document.getElementById("answer").value);
 
-    // Island 3 = double points
     let points = (currentIsland === 3) ? 2 : 1;
 
     if (userAnswer === correctAnswer) {
@@ -239,7 +241,6 @@ function updateStatus() {
     document.getElementById("coinsDisplay").innerText = `🪙 Coins: ${coins}`;
 }
 
-// ----- LocalStorage Save/Load -----
 function saveProgress(){
     localStorage.setItem('pirateScores', JSON.stringify(scores));
     localStorage.setItem('pirateCoins', coins);
