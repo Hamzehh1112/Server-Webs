@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pirate Math Adventure</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Comic Sans MS', cursive;
+        background: url('unnamed.jpg') center/cover fixed;
+        color: white;
+        text-align: center;
+    }
+
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        z-index: -1;
+    }
+
+    .container {
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(12px);
+        margin: 60px auto;
+        padding: 30px;
+        border-radius: 25px;
+        max-width: 520px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    }
+
+    h1 { font-size: 36px; }
+
+    .question { font-size: 28px; margin: 20px 0; }
+
+    input {
+        font-size: 22px;
+        padding: 10px;
+        width: 120px;
+        border-radius: 12px;
+        border: none;
+        text-align: center;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 12px 25px;
+        font-size: 20px;
+        border-radius: 15px;
+        border: none;
+        cursor: pointer;
+        background: linear-gradient(45deg, gold, orange);
+        color: black;
+        transition: 0.1s;
+    }
+
+    button:hover { transform: scale(1.1); }
+    button:active { transform: scale(0.95); }
+
+    .result { margin-top: 15px; font-size: 22px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏴‍☠️ Pirate Math Adventure</h1>
+    <div id="story">Press Start to begin your journey!</div>
+    <div class="question" id="question"></div>
+    <input type="number" id="answer" placeholder="?">
+    <br>
+    <button onclick="submitAnswer()">Answer</button>
+    <button onclick="startGame()">Start Game</button>
+    <div class="result" id="result"></div>
+    <div class="result" id="score"></div>
+</div>
+
+<!-- Sound Effects -->
+<audio id="correctSound" src="windows balloon.mp3"></audio>
+<audio id="wrongSound" src="erro.mp3"></audio>
+
+<script>
+let questions = [];
+let current = 0;
+let score = 0;
+let correctAnswer = 0;
+let level = 1;
+
+function generateQuestions() {
+    questions = [];
+    for (let i = 0; i < 5; i++) {
+        let a = Math.floor(Math.random() * (level + 5)) + 1;
+        let b = Math.floor(Math.random() * (level + 5)) + 1;
+        questions.push({ a, b });
+    }
+}
+
+function startGame() {
+    level = 1;
+    score = 0;
+    nextLevel();
+}
+
+function nextLevel() {
+    if (level > 3) {
+        document.getElementById("story").innerText = "💎 You conquered all islands and found the legendary treasure!";
+        document.getElementById("question").innerText = "🏆 Final Score: " + score;
+        return;
+    }
+
+    generateQuestions();
+    current = 0;
+
+    const stories = [
+        "🏝️ Island 1: You arrive on a calm island... Solve to explore!",
+        "🌊 Island 2: Stormy seas ahead! Stay sharp!",
+        "💀 Island 3: The cursed island... Only the best survive!"
+    ];
+
+    document.getElementById("story").innerText = stories[level - 1];
+    document.getElementById("score").innerText = "Island " + level + " | Score: " + score;
+
+    nextQuestion();
+}
+
+function nextQuestion() {
+    if (current >= questions.length) {
+        level++;
+        setTimeout(nextLevel, 1500);
+        return;
+    }
+
+    let q = questions[current];
+    correctAnswer = q.a * q.b;
+    document.getElementById("question").innerText = `What is ${q.a} × ${q.b}?`;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").innerText = "";
+}
+
+function submitAnswer() {
+    let userAnswer = Number(document.getElementById("answer").value);
+
+    if (userAnswer === correctAnswer) {
+        score++;
+        document.getElementById("result").innerText = "🏴‍☠️ Aye! Correct!";
+        document.getElementById("correctSound").play();
+    } else {
+        document.getElementById("result").innerText = "💀 Wrong! It was " + correctAnswer;
+        document.getElementById("wrongSound").play();
+    }
+
+    current++;
+    document.getElementById("score").innerText = "Island " + level + " | Score: " + score;
+
+    setTimeout(nextQuestion, 1200);
+}
+</script>
+
+</body>
+</html>
