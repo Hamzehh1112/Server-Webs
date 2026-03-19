@@ -12,7 +12,6 @@
         color: white;
         text-align: center;
     }
-
     body::before {
         content: "";
         position: fixed;
@@ -20,7 +19,6 @@
         background: rgba(0,0,0,0.45);
         z-index: -1;
     }
-
     .container {
         background: rgba(0,0,0,0.55);
         backdrop-filter: blur(12px);
@@ -30,17 +28,9 @@
         max-width: 520px;
         box-shadow: 0 0 25px rgba(0,0,0,0.6);
     }
-
     h1 { font-size: 36px; }
-
     .question { font-size: 28px; margin: 20px 0; }
-
-    .map {
-        display: flex;
-        justify-content: space-around;
-        margin: 20px 0;
-    }
-
+    .map { display: flex; justify-content: space-around; margin: 20px 0; }
     .island-btn {
         padding: 15px;
         border-radius: 50%;
@@ -55,37 +45,10 @@
         justify-content: center;
         transition: 0.2s;
     }
-
-    .island-btn.locked {
-        background: gray;
-        cursor: not-allowed;
-    }
-
-    .island-btn:hover:not(.locked) {
-        transform: scale(1.2);
-    }
-
-    input {
-        font-size: 22px;
-        padding: 10px;
-        width: 120px;
-        border-radius: 12px;
-        border: none;
-        text-align: center;
-    }
-
-    button {
-        margin-top: 15px;
-        padding: 12px 25px;
-        font-size: 20px;
-        border-radius: 15px;
-        border: none;
-        cursor: pointer;
-        background: linear-gradient(45deg, gold, orange);
-        color: black;
-        margin-right: 10px;
-    }
-
+    .island-btn.locked { background: gray; cursor: not-allowed; }
+    .island-btn:hover:not(.locked) { transform: scale(1.2); }
+    input { font-size: 22px; padding: 10px; width: 120px; border-radius: 12px; border: none; text-align: center; }
+    button { margin-top: 15px; padding: 12px 25px; font-size: 20px; border-radius: 15px; border: none; cursor: pointer; background: linear-gradient(45deg, gold, orange); color: black; margin-right: 10px; }
     .result { margin-top: 15px; font-size: 22px; }
     .status { margin-top: 10px; font-size: 20px; }
 </style>
@@ -99,8 +62,8 @@
         <div id="story">🗺️ Choose an island to explore!</div>
         <div class="map">
             <div class="island-btn" id="island1" onclick="startIsland(1)">1</div>
-            <div class="island-btn locked" id="island2">2</div>
-            <div class="island-btn locked" id="island3">3</div>
+            <div class="island-btn locked" id="island2" onclick="startIsland(2)">2</div>
+            <div class="island-btn locked" id="island3" onclick="startIsland(3)">3</div>
         </div>
     </div>
 
@@ -136,10 +99,8 @@ loadProgress();
 function generateQuestions() {
     questions = [];
     const tables = [1,2,3,4,5,6,7,8,9,10];
-
     for (let i = 0; i < 10; i++) {
         let a, b;
-
         if(currentIsland === 3){
             const hardPairs = [[7,8],[9,6],[8,9],[6,7],[10,10]];
             let pair = hardPairs[Math.floor(Math.random()*hardPairs.length)];
@@ -148,28 +109,23 @@ function generateQuestions() {
             a = tables[Math.floor(Math.random() * tables.length)];
             b = tables[Math.floor(Math.random() * tables.length)];
         }
-
         questions.push({a, b});
     }
 }
 
 function startIsland(island) {
-    if (island > unlockedIsland) return;
-
+    if (island > unlockedIsland) return; // block locked islands
     document.getElementById("mapScreen").style.display = "none";
     document.getElementById("gameScreen").style.display = "block";
-
     currentIsland = island;
     current = 0;
     lives = 3;
     generateQuestions();
-
     const stories = [
         "🏝️ Island 1: You discover a mysterious map...",
         "🌊 Island 2: Pirates attack your ship! Solve to fight back!",
         "⚔️ Island 3: Captain Skull challenges you! Harder questions ahead!"
     ];
-
     document.getElementById("story").innerText = stories[island - 1];
     updateStatus();
     nextQuestion();
@@ -177,39 +133,31 @@ function startIsland(island) {
 
 function nextQuestion() {
     if (current >= questions.length || lives <= 0) {
-        // If player lost all lives
         if (lives <= 0) {
             document.getElementById("result").innerText = "💀 Game Over! Returning to map...";
         }
-
-        // Unlock next island if island finished and player still alive
         if (currentIsland === unlockedIsland && lives > 0 && unlockedIsland < 3) {
             unlockedIsland++;
             document.getElementById("island" + unlockedIsland).classList.remove("locked");
         }
-
         saveProgress();
-
         setTimeout(() => {
             document.getElementById("gameScreen").style.display = "none";
             document.getElementById("mapScreen").style.display = "block";
             document.getElementById("story").innerText = "🗺️ Choose your next island!";
         }, 1200);
-
         return;
     }
-
     let q = questions[current];
     correctAnswer = q.a * q.b;
     document.getElementById("question").innerText = `What is ${q.a} × ${q.b}?`;
     document.getElementById("answer").value = "";
     document.getElementById("result").innerText = "";
 }
+
 function submitAnswer() {
     let userAnswer = Number(document.getElementById("answer").value);
-
     let points = (currentIsland === 3) ? 2 : 1;
-
     if (userAnswer === correctAnswer) {
         scores[currentIsland] += points;
         coins += 1;
@@ -220,7 +168,6 @@ function submitAnswer() {
         document.getElementById("result").innerText = `💀 Wrong! It was ${correctAnswer}. Lives left: ${lives}`;
         document.getElementById("wrongSound").play();
     }
-
     current++;
     updateStatus();
     saveProgress();
