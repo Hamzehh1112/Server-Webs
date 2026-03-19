@@ -177,9 +177,13 @@ function startIsland(island) {
 
 function nextQuestion() {
     if (current >= questions.length || lives <= 0) {
+        // If player lost all lives
         if (lives <= 0) {
             document.getElementById("result").innerText = "💀 Game Over! Returning to map...";
-        } else if (currentIsland === unlockedIsland && unlockedIsland < 3) {
+        }
+
+        // Unlock next island if island finished and player still alive
+        if (currentIsland === unlockedIsland && lives > 0 && unlockedIsland < 3) {
             unlockedIsland++;
             document.getElementById("island" + unlockedIsland).classList.remove("locked");
         }
@@ -201,7 +205,6 @@ function nextQuestion() {
     document.getElementById("answer").value = "";
     document.getElementById("result").innerText = "";
 }
-
 function submitAnswer() {
     let userAnswer = Number(document.getElementById("answer").value);
 
