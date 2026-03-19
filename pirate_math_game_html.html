@@ -17,12 +17,12 @@
         content: "";
         position: fixed;
         inset: 0;
-        background: rgba(0,0,0,0.4);
+        background: rgba(0,0,0,0.45);
         z-index: -1;
     }
 
     .container {
-        background: rgba(0,0,0,0.5);
+        background: rgba(0,0,0,0.55);
         backdrop-filter: blur(12px);
         margin: 60px auto;
         padding: 30px;
@@ -34,6 +34,36 @@
     h1 { font-size: 36px; }
 
     .question { font-size: 28px; margin: 20px 0; }
+
+    .map {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+
+    .island-btn {
+        padding: 15px;
+        border-radius: 50%;
+        background: gold;
+        color: black;
+        cursor: pointer;
+        font-size: 18px;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+    }
+
+    .island-btn.locked {
+        background: gray;
+        cursor: not-allowed;
+    }
+
+    .island-btn:hover:not(.locked) {
+        transform: scale(1.2);
+    }
 
     input {
         font-size: 22px;
@@ -53,81 +83,112 @@
         cursor: pointer;
         background: linear-gradient(45deg, gold, orange);
         color: black;
-        transition: 0.1s;
     }
 
-    button:hover { transform: scale(1.1); }
-    button:active { transform: scale(0.95); }
-
     .result { margin-top: 15px; font-size: 22px; }
+    .status { margin-top: 10px; font-size: 20px; }
 </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🏴‍☠️ Pirate Math Adventure</h1>
-    <div id="story">Press Start to begin your journey!</div>
-    <div class="question" id="question"></div>
-    <input type="number" id="answer" placeholder="?">
-    <br>
-    <button onclick="submitAnswer()">Answer</button>
-    <button onclick="startGame()">Start Game</button>
-    <div class="result" id="result"></div>
-    <div class="result" id="score"></div>
+
+    <div id="mapScreen">
+        <div id="story">🗺️ Choose an island to explore!</div>
+        <div class="map">
+            <div class="island-btn" id="island1" onclick="startIsland(1)">1</div>
+            <div class="island-btn locked" id="island2">2</div>
+            <div class="island-btn locked" id="island3">3</div>
+        </div>
+    </div>
+
+    <div id="gameScreen" style="display:none;">
+        <div id="story"></div>
+        <div class="question" id="question"></div>
+        <input type="number" id="answer" placeholder="?">
+        <br>
+        <button onclick="submitAnswer()">Answer</button>
+        <button onclick="useHint()">💡 Hint (Cost: 2 🪙)</button>
+        <div class="result" id="result"></div>
+        <div class="status" id="score"></div>
+        <div class="status" id="lives"></div>
+        <div class="status" id="coinsDisplay"></div>
+    </div>
 </div>
 
-<!-- Sound Effects -->
 <audio id="correctSound" src="windows balloon.mp3"></audio>
 <audio id="wrongSound" src="erro.mp3"></audio>
 
 <script>
 let questions = [];
 let current = 0;
-let score = 0;
+let scores = {1:0,2:0,3:0};
+let coins = 0;
+let lives = 3;
 let correctAnswer = 0;
-let level = 1;
+let unlockedIsland = 1;
+let currentIsland = 1;
+
+loadProgress();
 
 function generateQuestions() {
     questions = [];
-    for (let i = 0; i < 5; i++) {
-        let a = Math.floor(Math.random() * (level + 5)) + 1;
-        let b = Math.floor(Math.random() * (level + 5)) + 1;
-        questions.push({ a, b });
+    const tables = [1,2,3,4,5,6,7,8,9,10];
+
+    for (let i = 0; i < 10; i++) {
+        let a, b;
+
+        // Island 3 = Boss Fight, harder numbers
+        if(currentIsland === 3){
+            const hardPairs = [[7,8],[9,6],[8,9],[6,7],[10,10]];
+            let pair = hardPairs[Math.floor(Math.random()*hardPairs.length)];
+            a = pair[0]; b = pair[1];
+        } else {
+            a = tables[Math.floor(Math.random() * tables.length)];
+            b = tables[Math.floor(Math.random() * tables.length)];
+        }
+
+        questions.push({a, b});
     }
 }
 
-function startGame() {
-    level = 1;
-    score = 0;
-    nextLevel();
-}
+function startIsland(island) {
+    if (island > unlockedIsland) return;
 
-function nextLevel() {
-    if (level > 3) {
-        document.getElementById("story").innerText = "💎 You conquered all islands and found the legendary treasure!";
-        document.getElementById("question").innerText = "🏆 Final Score: " + score;
-        return;
-    }
+    document.getElementById("mapScreen").style.display = "none";
+    document.getElementById("gameScreen").style.display = "block";
 
-    generateQuestions();
+    currentIsland = island;
     current = 0;
+    lives = 3;
+    generateQuestions();
 
     const stories = [
-        "🏝️ Island 1: You arrive on a calm island... Solve to explore!",
-        "🌊 Island 2: Stormy seas ahead! Stay sharp!",
-        "💀 Island 3: The cursed island... Only the best survive!"
+        "🏝️ Island 1: You discover a mysterious map...",
+        "🌊 Island 2: Pirates attack your ship! Solve to fight back!",
+        "⚔️ Island 3: Captain Skull challenges you! Harder questions ahead!"
     ];
 
-    document.getElementById("story").innerText = stories[level - 1];
-    document.getElementById("score").innerText = "Island " + level + " | Score: " + score;
-
+    document.getElementById("story").innerText = stories[island - 1];
+    updateStatus();
     nextQuestion();
 }
 
 function nextQuestion() {
-    if (current >= questions.length) {
-        level++;
-        setTimeout(nextLevel, 1500);
+    if (current >= questions.length || lives <= 0) {
+        if (lives <= 0) {
+            document.getElementById("result").innerText = "💀 Game Over! Returning to map...";
+        } else if (currentIsland === unlockedIsland && unlockedIsland < 3) {
+            unlockedIsland++;
+            document.getElementById("island" + unlockedIsland).classList.remove("locked");
+        }
+        saveProgress();
+        setTimeout(() => {
+            document.getElementById("gameScreen").style.display = "none";
+            document.getElementById("mapScreen").style.display = "block";
+            document.getElementById("story").innerText = "🗺️ Choose your next island!";
+        }, 1200);
         return;
     }
 
@@ -141,19 +202,63 @@ function nextQuestion() {
 function submitAnswer() {
     let userAnswer = Number(document.getElementById("answer").value);
 
+    // Island 3 = double points
+    let points = (currentIsland === 3) ? 2 : 1;
+
     if (userAnswer === correctAnswer) {
-        score++;
-        document.getElementById("result").innerText = "🏴‍☠️ Aye! Correct!";
+        scores[currentIsland] += points;
+        coins += 1;
+        document.getElementById("result").innerText = `🏴‍☠️ Correct! +${points} pts, +1 🪙`;
         document.getElementById("correctSound").play();
     } else {
-        document.getElementById("result").innerText = "💀 Wrong! It was " + correctAnswer;
+        lives--;
+        document.getElementById("result").innerText = `💀 Wrong! It was ${correctAnswer}. Lives left: ${lives}`;
         document.getElementById("wrongSound").play();
     }
 
     current++;
-    document.getElementById("score").innerText = "Island " + level + " | Score: " + score;
+    updateStatus();
+    saveProgress();
+    setTimeout(nextQuestion, 1000);
+}
 
-    setTimeout(nextQuestion, 1200);
+function useHint() {
+    if(coins < 2) {
+        document.getElementById("result").innerText = "❌ Not enough coins for a hint!";
+        return;
+    }
+    coins -= 2;
+    document.getElementById("result").innerText = `💡 Hint: ${questions[current].a} × ${questions[current].b} = ${correctAnswer}`;
+    updateStatus();
+    saveProgress();
+}
+
+function updateStatus() {
+    document.getElementById("score").innerText = `Island ${currentIsland} | Score: ${scores[currentIsland]}`;
+    document.getElementById("lives").innerText = `❤️ Lives: ${lives}`;
+    document.getElementById("coinsDisplay").innerText = `🪙 Coins: ${coins}`;
+}
+
+// ----- LocalStorage Save/Load -----
+function saveProgress(){
+    localStorage.setItem('pirateScores', JSON.stringify(scores));
+    localStorage.setItem('pirateCoins', coins);
+    localStorage.setItem('pirateUnlocked', unlockedIsland);
+}
+
+function loadProgress(){
+    if(localStorage.getItem('pirateScores')){
+        scores = JSON.parse(localStorage.getItem('pirateScores'));
+    }
+    if(localStorage.getItem('pirateCoins')){
+        coins = Number(localStorage.getItem('pirateCoins'));
+    }
+    if(localStorage.getItem('pirateUnlocked')){
+        unlockedIsland = Number(localStorage.getItem('pirateUnlocked'));
+        for(let i=2;i<=unlockedIsland;i++){
+            document.getElementById("island"+i).classList.remove("locked");
+        }
+    }
 }
 </script>
 
